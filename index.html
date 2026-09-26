@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Stay Connected</title>
+<style>
+:root{--bg:#08111f;--panel:#101c2e;--panel2:#16263d;--text:#eef5ff;--muted:#9bb0c9;--accent:#38bdf8;--radius:18px;--font:Arial,Helvetica,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);transition:.2s}
+header{padding:16px 5%;display:flex;justify-content:space-between;align-items:center;background:#07101cdd;position:sticky;top:0;z-index:10;border-bottom:1px solid #ffffff16;backdrop-filter:blur(12px)}
+.brand{font-size:22px;font-weight:900}.brand span{color:var(--accent)}button,.btn{border:0;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer;background:var(--accent);color:#07111f}
+.btn.secondary{background:#ffffff14;color:var(--text)}.btn.danger{background:#dc2626;color:white}
+main{max-width:1200px;margin:auto;padding:30px 20px 60px}.hero{padding:42px;border-radius:var(--radius);background:linear-gradient(135deg,var(--panel2),var(--panel));border:1px solid #ffffff15;margin-bottom:20px}
+h1{font-size:clamp(32px,6vw,62px);margin:0 0 12px}.subtitle,.muted{color:var(--muted)}.status{display:inline-flex;gap:8px;align-items:center;margin-top:20px;padding:10px 14px;background:#ffffff0c;border-radius:999px}.dot{width:10px;height:10px;border-radius:50%;background:#22c55e}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}.card{background:var(--panel);border:1px solid #ffffff10;border-radius:var(--radius);padding:20px}.card h2{margin-top:0}.item{background:var(--panel2);padding:13px;border-radius:12px;margin:10px 0}.custom-section{min-height:90px}
+footer{text-align:center;color:var(--muted);padding:30px}
+.modal{display:none;position:fixed;inset:0;background:#000a;z-index:30;place-items:center;padding:15px}.modal.show{display:grid}.box{width:min(1050px,100%);max-height:92vh;overflow:auto;background:var(--panel);padding:24px;border-radius:var(--radius);border:1px solid #ffffff18}
+.tabs{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px}.tabs button{background:#ffffff10;color:white}.tabs button.active{background:var(--accent);color:#07111f}
+.tab{display:none}.tab.active{display:block}label{display:block;margin:12px 0 6px;font-weight:700}input,textarea,select{width:100%;padding:11px;border-radius:9px;border:1px solid #ffffff1c;background:var(--bg);color:var(--text)}textarea{min-height:90px}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}.list-item{display:flex;justify-content:space-between;gap:10px;align-items:center;background:#ffffff08;padding:10px;border-radius:10px;margin:8px 0}
+.template-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}.template{padding:20px;border-radius:15px;cursor:pointer;border:2px solid transparent}.template:hover{border-color:white}.template.ocean{background:linear-gradient(135deg,#062c4a,#0ea5e9)}.template.emergency{background:linear-gradient(135deg,#111827,#b91c1c)}.template.city{background:linear-gradient(135deg,#3f6212,#65a30d)}.template.midnight{background:linear-gradient(135deg,#020617,#4338ca)}.template.light{background:linear-gradient(135deg,#e2e8f0,#94a3b8);color:#111827}
+.preview{padding:15px;border-radius:10px;margin:10px 0;background:#ffffff0a}.section-toggle{display:flex;justify-content:space-between;align-items:center;padding:10px;background:#ffffff08;border-radius:10px;margin:8px 0}
+@media(max-width:600px){.row{grid-template-columns:1fr}.hero{padding:28px}}
+</style>
+</head>
+<body>
+<header><div class="brand"><span>STAY</span> CONNECTED</div><button class="btn secondary" onclick="openAdmin()">Customize Website</button></header>
+<main>
+<section class="hero" id="hero">
+<h1 id="serverName">Liberty County Roleplay</h1><div class="subtitle" id="serverDescription">Welcome to our ERLC Roblox community!</div>
+<div class="status" id="statusBox"><span class="dot" id="statusDot"></span><span id="statusText">Server Status: ONLINE</span></div>
+<div class="actions"><a id="robloxLink" href="https://docs.google.com/forms/d/e/1FAIpQLSdzgkWcb-_C_x_Clns8EYtvJ5ek-lBnIxsovJJmbTqU1v78Mw/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer"><button class="btn">Open Application Form</button></a></div>
+</section>
+<section class="grid" id="sectionsGrid"></section>
+</main><footer id="footerText">Stay Connected • Build, customize, and manage your community</footer>
+
+<div class="modal" id="modal"><div class="box">
+<h2>Stay Connected Builder</h2>
+<div id="loginArea"><p class="muted">Enter your builder password.</p><input id="passwordInput" type="password" placeholder="Password"><div class="actions"><button onclick="login()">Open Builder</button><button class="btn secondary" onclick="closeAdmin()">Cancel</button></div><p class="muted">Default password: <b>admin123</b></p></div>
+
+<div id="builderArea" style="display:none">
+<div class="tabs">
+<button class="active" onclick="tab('general',this)">General</button>
+<button onclick="tab('templates',this)">Templates</button>
+<button onclick="tab('design',this)">Design</button>
+<button onclick="tab('sections',this)">Sections</button>
+<button onclick="tab('custom',this)">Custom Sections</button>
+<button onclick="tab('content',this)">Content</button>
+<button onclick="tab('backup',this)">Backup</button>
+</div>
+
+<div id="general" class="tab active">
+<label>Website / Server Name</label><input id="gName">
+<label>Website Description</label><textarea id="gDescription"></textarea>
+<div class="row"><div><label>Server Status</label><select id="gStatus"><option>ONLINE</option><option>OFFLINE</option><option>MAINTENANCE</option></select></div><div><label>Homepage Button Text</label><input id="gButtonText"></div></div>
+<label>Homepage Button Link</label><input id="gLink">
+<label>Footer Text</label><input id="gFooter">
+<label>New Admin Password</label><input id="gPassword" type="password" placeholder="Leave blank to keep current password">
+<div class="actions"><button onclick="saveGeneral()">Save General Settings</button></div>
+</div>
+
+<div id="templates" class="tab">
+<p class="muted">Choose a complete starting style. You can still customize every color afterward.</p>
+<div class="template-grid">
+<div class="template ocean" onclick="applyTemplate('ocean')"><b>Ocean Blue</b><br><small>Modern police-style hub</small></div>
+<div class="template emergency" onclick="applyTemplate('emergency')"><b>Emergency Red</b><br><small>Fire & emergency theme</small></div>
+<div class="template city" onclick="applyTemplate('city')"><b>County Green</b><br><small>Sheriff & county theme</small></div>
+<div class="template midnight" onclick="applyTemplate('midnight')"><b>Midnight</b><br><small>Dark gaming theme</small></div>
+<div class="template light" onclick="applyTemplate('light')"><b>Light City</b><br><small>Clean bright theme</small></div>
+</div></div>
+
+<div id="design" class="tab">
+<div class="row"><div><label>Background Color</label><input type="color" id="dBg"></div><div><label>Main Panel Color</label><input type="color" id="dPanel"></div></div>
+<div class="row"><div><label>Secondary Panel</label><input type="color" id="dPanel2"></div><div><label>Text Color</label><input type="color" id="dText"></div></div>
+<div class="row"><div><label>Accent Color</label><input type="color" id="dAccent"></div><div><label>Muted Text</label><input type="color" id="dMuted"></div></div>
+<div class="row"><div><label>Border Roundness</label><select id="dRadius"><option value="0px">Square</option><option value="8px">Small</option><option value="18px">Rounded</option><option value="32px">Extra Rounded</option></select></div><div><label>Font Style</label><select id="dFont"><option value="Arial,Helvetica,sans-serif">Modern</option><option value="Georgia,serif">Classic</option><option value="Trebuchet MS,Arial,sans-serif">Gaming</option><option value="Verdana,sans-serif">Simple</option></select></div></div>
+<div class="actions"><button onclick="saveDesign()">Apply Design</button></div>
+</div>
+
+<div id="sections" class="tab"><p class="muted">Turn built-in sections on or off and rename them.</p><div id="sectionControls"></div><button onclick="saveSections()">Save Sections</button></div>
+
+<div id="custom" class="tab">
+<label>Custom Section Title</label><input id="customTitle" placeholder="Example: Department Applications">
+<label>Custom Section Content</label><textarea id="customContent" placeholder="Write anything you want..."></textarea>
+<button onclick="addCustom()">Add Custom Section</button><div id="customList"></div>
+</div>
+
+<div id="content" class="tab">
+<h3>Announcements</h3><textarea id="newAnnouncement" placeholder="New announcement"></textarea><button onclick="addAnnouncement()">Add Announcement</button><div id="annList"></div>
+<h3>Events</h3><div class="row"><input id="eventTitle" placeholder="Event name"><input id="eventDate" placeholder="Date / time"></div><textarea id="eventDetails" placeholder="Event details"></textarea><button onclick="addEvent()">Add Event</button><div id="eventList"></div>
+<h3>Rules</h3><textarea id="rulesInput" placeholder="One rule per line"></textarea><button onclick="saveRules()">Save Rules</button>
+</div>
+
+<div id="backup" class="tab">
+<p>You can export your entire website setup, including your template, colors, names, sections, and content.</p>
+<div class="actions"><button onclick="exportData()">Export Website Backup</button><button class="btn secondary" onclick="importFile.click()">Import Backup</button><input id="importFile" type="file" accept=".json" style="display:none" onchange="importData(event)"><button class="btn danger" onclick="resetData()">Reset Everything</button></div>
+</div>
+<div class="actions"><button class="btn secondary" onclick="closeAdmin()">Close Builder</button></div>
+</div></div></div>
+
+<script>
+const defaults={name:"Liberty County Roleplay",description:"Welcome to our ERLC Roblox community!",status:"ONLINE",buttonText:"Open Application Form",link:"https://docs.google.com/forms/d/e/1FAIpQLSdzgkWcb-_C_x_Clns8EYtvJ5ek-lBnIxsovJJmbTqU1v78Mw/viewform?usp=publish-editor",footer:"Stay Connected • Build, customize, and manage your community",password:"admin123",
+design:{bg:"#08111f",panel:"#101c2e",panel2:"#16263d",text:"#eef5ff",muted:"#9bb0c9",accent:"#38bdf8",radius:"18px",font:"Arial,Helvetica,sans-serif"},
+sections:{announcements:{on:true,title:"📢 Latest Announcements"},events:{on:true,title:"📅 Upcoming Events"},info:{on:true,title:"🚨 Server Information"},rules:{on:true,title:"📜 Rules"}},
+announcements:["Welcome to the official server hub!"],events:[{title:"Friday Night Patrol",date:"Friday • 7:00 PM",details:"Join the community for a server patrol."}],rules:["Respect all players and staff.","Follow Roblox and ERLC rules.","No admin abuse."],custom:[]};
+let data=JSON.parse(localStorage.getItem("erlcBuilderData")||"null")||structuredClone(defaults);
+// Force the official Stay Connected homepage button to use the Google Form.
+data.link="https://docs.google.com/forms/d/e/1FAIpQLSdzgkWcb-_C_x_Clns8EYtvJ5ek-lBnIxsovJJmbTqU1v78Mw/viewform?usp=publish-editor";
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+function css(){let d=data.design;let r=document.documentElement.style;r.setProperty("--bg",d.bg);r.setProperty("--panel",d.panel);r.setProperty("--panel2",d.panel2);r.setProperty("--text",d.text);r.setProperty("--muted",d.muted);r.setProperty("--accent",d.accent);r.setProperty("--radius",d.radius);r.setProperty("--font",d.font)}
+function save(){localStorage.setItem("erlcBuilderData",JSON.stringify(data));css();render()}
+function card(title,content,key){return data.sections[key]?.on?`<div class="card"><h2>${esc(title)}</h2>${content}</div>`:""}
+function render(){
+css();
+document.getElementById("serverName").textContent=data.name;
+document.getElementById("serverDescription").textContent=data.description;
+document.getElementById("statusText").textContent="Server Status: "+data.status;statusDot.style.background=data.status==="ONLINE"?"#22c55e":data.status==="MAINTENANCE"?"#f59e0b":"#ef4444";document.getElementById("robloxLink").href="https://docs.google.com/forms/d/e/1FAIpQLSdzgkWcb-_C_x_Clns8EYtvJ5ek-lBnIxsovJJmbTqU1v78Mw/viewform?usp=publish-editor";
+document.getElementById("robloxLink").querySelector("button").textContent=data.buttonText;
+document.getElementById("footerText").textContent=data.footer;
+let a=data.announcements.length?data.announcements.map(x=>`<div class="item">${esc(x)}</div>`).join(""):'<div class="muted">No announcements yet.</div>';
+let e=data.events.length?data.events.map(x=>`<div class="item"><b>${esc(x.title)}</b><br><span class="muted">${esc(x.date)}</span><br>${esc(x.details)}</div>`).join(""):'<div class="muted">No events yet.</div>';
+let i=`<div class="item"><b>Status:</b> ${esc(data.status)}</div><div class="item"><b>Game:</b> Emergency Response: Liberty County</div>`;
+let r=data.rules.map((x,n)=>`<div class="item">${n+1}. ${esc(x)}</div>`).join("");
+sectionsGrid.innerHTML=card(data.sections.announcements.title,a,"announcements")+card(data.sections.events.title,e,"events")+card(data.sections.info.title,i,"info")+card(data.sections.rules.title,r,"rules")+data.custom.map((x,n)=>`<div class="card custom-section"><h2>${esc(x.title)}</h2><div>${esc(x.content).replace(/\n/g,"<br>")}</div></div>`).join("");
+}
+function openAdmin(){modal.classList.add("show")}function closeAdmin(){modal.classList.remove("show");passwordInput.value=""}
+function login(){if(passwordInput.value===data.password){loginArea.style.display="none";builderArea.style.display="block";loadBuilder()}else alert("Incorrect password")}
+function tab(id,b){document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("active"));b.classList.add("active")}
+function loadBuilder(){
+document.getElementById("gName").value=data.name;
+document.getElementById("gDescription").value=data.description;
+document.getElementById("gStatus").value=data.status;
+document.getElementById("gButtonText").value=data.buttonText;
+document.getElementById("gLink").value=data.link;
+document.getElementById("gFooter").value=data.footer;
+dBg.value=data.design.bg;dPanel.value=data.design.panel;dPanel2.value=data.design.panel2;dText.value=data.design.text;dMuted.value=data.design.muted;dAccent.value=data.design.accent;dRadius.value=data.design.radius;dFont.value=data.design.font;rulesInput.value=data.rules.join("\n");renderControls();renderLists()
+}
+function saveGeneral(){
+const nameEl=document.getElementById("gName");
+const descEl=document.getElementById("gDescription");
+const statusEl=document.getElementById("gStatus");
+const buttonEl=document.getElementById("gButtonText");
+const linkEl=document.getElementById("gLink");
+const footerEl=document.getElementById("gFooter");
+const passwordEl=document.getElementById("gPassword");
+if(nameEl && nameEl.value.trim()) data.name=nameEl.value.trim();
+if(descEl) data.description=descEl.value;
+if(statusEl) data.status=statusEl.value;
+if(buttonEl) data.buttonText=buttonEl.value.trim()||"Open Application Form";
+if(linkEl && linkEl.value.trim()) data.link=linkEl.value.trim();
+if(footerEl && footerEl.value) data.footer=footerEl.value;
+if(passwordEl && passwordEl.value) data.password=passwordEl.value;
+localStorage.setItem("erlcBuilderData",JSON.stringify(data));
+render();
+if(passwordEl) passwordEl.value="";
+alert("General settings saved successfully!");
+}
+function saveDesign(){data.design={bg:dBg.value,panel:dPanel.value,panel2:dPanel2.value,text:dText.value,muted:dMuted.value,accent:dAccent.value,radius:dRadius.value,font:dFont.value};save()}
+function renderControls(){sectionControls.innerHTML=Object.entries(data.sections).map(([k,x])=>`<div class="section-toggle"><span><b>${esc(k)}</b><br><input id="title_${k}" value="${esc(x.title)}"></span><input type="checkbox" id="on_${k}" ${x.on?"checked":""}></div>`).join("")}
+function saveSections(){Object.keys(data.sections).forEach(k=>{data.sections[k].on=document.getElementById("on_"+k).checked;data.sections[k].title=document.getElementById("title_"+k).value||data.sections[k].title});save();alert("Sections updated!")}
+function addCustom(){let t=customTitle.value.trim(),c=customContent.value.trim();if(!t)return;data.custom.push({title:t,content:c});customTitle.value=customContent.value="";save();renderLists()}
+function delCustom(i){data.custom.splice(i,1);save();renderLists()}
+function addAnnouncement(){let x=newAnnouncement.value.trim();if(!x)return;data.announcements.unshift(x);newAnnouncement.value="";save();renderLists()}
+function delAnn(i){data.announcements.splice(i,1);save();renderLists()}
+function addEvent(){let t=eventTitle.value.trim();if(!t)return;data.events.unshift({title:t,date:eventDate.value.trim(),details:eventDetails.value.trim()});eventTitle.value=eventDate.value=eventDetails.value="";save();renderLists()}
+function delEvent(i){data.events.splice(i,1);save();renderLists()}
+function saveRules(){data.rules=rulesInput.value.split("\n").map(x=>x.trim()).filter(Boolean);save();alert("Rules saved!")}
+function renderLists(){
+customList.innerHTML=data.custom.map((x,i)=>`<div class="list-item"><span><b>${esc(x.title)}</b></span><button class="btn danger" onclick="delCustom(${i})">Delete</button></div>`).join("");
+annList.innerHTML=data.announcements.map((x,i)=>`<div class="list-item"><span>${esc(x)}</span><button class="btn danger" onclick="delAnn(${i})">Delete</button></div>`).join("");
+eventList.innerHTML=data.events.map((x,i)=>`<div class="list-item"><span><b>${esc(x.title)}</b><br>${esc(x.date)}</span><button class="btn danger" onclick="delEvent(${i})">Delete</button></div>`).join("");
+}
+const templates={ocean:{bg:"#061827",panel:"#0b2842",panel2:"#103b60",text:"#eef8ff",muted:"#9fc5df",accent:"#38bdf8"},emergency:{bg:"#160b0b",panel:"#2b1010",panel2:"#4a1515",text:"#fff5f5",muted:"#f3b2b2",accent:"#ef4444"},city:{bg:"#0b160c",panel:"#17351b",panel2:"#275b2e",text:"#f2fff3",muted:"#b6d5b9",accent:"#84cc16"},midnight:{bg:"#070712",panel:"#12122b",panel2:"#232350",text:"#f5f3ff",muted:"#b9b6d9",accent:"#818cf8"},light:{bg:"#e2e8f0",panel:"#f8fafc",panel2:"#dbeafe",text:"#172033",muted:"#64748b",accent:"#2563eb"}};
+function applyTemplate(n){Object.assign(data.design,templates[n]);save();loadBuilder();alert("Template applied!")}
+function exportData(){let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}));a.download="erlc-website-backup.json";a.click()}
+function importData(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{data=JSON.parse(r.result);save();loadBuilder();alert("Website imported!")}catch{alert("Invalid file")}};r.readAsText(f)}
+function resetData(){if(confirm("Reset the entire website?")){data=structuredClone(defaults);save();loadBuilder()}}
+render();
+</script>
+</body></html>
